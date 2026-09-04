@@ -1,188 +1,87 @@
 import React, { useState } from 'react';
-import { CreateProductDTO, Product } from '../types/product';
-import { createProduct } from '../services/api';
+import { Product } from '../types/product';
 
 interface ProductFormProps {
   onProductCreated: (newProduct: Product) => void;
 }
 
-export const ProductForm: React.FC<ProductFormProps> = ({ onProductCreated }) => {
-  // [MÓDULO 3] - Estado del Formulario con TypeScript
-  const [formData, setFormData] = useState<CreateProductDTO>({
-    nombre: '',
-    categoria: 'Electrónica',
-    precio: 0,
-    stock: 0,
-  });
+/**
+ * ============================================================================
+ * [MÓDULO 3] - COMPONENTE DE FORMULARIO
+ * Rama de trabajo: feature/agregar-producto
+ * ============================================================================
+ * Tareas para el alumno en este componente:
+ * 1. Definir el estado local con useState<CreateProductDTO>({ ... }).
+ * 2. Crear la función handleChange para capturar los inputs.
+ * 3. Crear la función handleSubmit para llamar a createProduct(formData).
+ * 4. Al recibir la respuesta exitosa, invocar onProductCreated(nuevoProducto).
+ */
+export const ProductForm: React.FC<ProductFormProps> = ({ onProductCreated: _onProductCreated }) => {
+  // Estado local de ejemplo para cuando comiencen el Módulo 3
+  const [nombre, setNombre] = useState('');
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
-  // Manejador genérico de cambios en inputs
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === 'precio' || name === 'stock' ? Number(value) : value,
-    }));
-  };
-
-  // [MÓDULO 3] - Envío con POST a la API
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handlePlaceholderSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage(null);
-    setSuccessMessage(null);
-
-    // Validación básica en cliente
-    if (!formData.nombre.trim()) {
-      setErrorMessage('El nombre del producto no puede estar vacío.');
-      return;
-    }
-
-    if (formData.precio <= 0) {
-      setErrorMessage('El precio debe ser mayor a 0.');
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const nuevoProducto = await createProduct(formData);
-      onProductCreated(nuevoProducto);
-      setSuccessMessage(`¡Producto "${nuevoProducto.nombre}" agregado con éxito!`);
-
-      // Resetear campos
-      setFormData({
-        nombre: '',
-        categoria: 'Electrónica',
-        precio: 0,
-        stock: 0,
-      });
-
-      // Limpiar mensaje tras 4 segundos
-      setTimeout(() => setSuccessMessage(null), 4000);
-    } catch (err: any) {
-      setErrorMessage(err.message || 'Error al conectar con el servidor.');
-    } finally {
-      setLoading(false);
-    }
+    alert(
+      '⚠️ Módulo 3: El formulario aún no está conectado a la base de datos.\n\n' +
+      'Sigue la guía del Módulo 3 en la rama `feature/agregar-producto` para implementar useState y la petición POST.'
+    );
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
-      <div className="mb-4">
-        <h2 className="text-base font-semibold text-gray-900">Agregar Nuevo Producto al Inventario</h2>
-        <p className="text-xs text-gray-500">Módulo 3: Petición POST a MongoDB Atlas mediante API Express.</p>
+    <div className="bg-white rounded-xl shadow-sm border border-indigo-100 p-6 mb-8 relative overflow-hidden">
+      <div className="flex items-center justify-between mb-4 border-b border-gray-100 pb-3">
+        <div>
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
+            Pendiente de Implementar (Módulo 3)
+          </span>
+          <h2 className="text-base font-bold text-gray-900 mt-1">Formulario de Nuevo Producto</h2>
+        </div>
+        <span className="text-xs font-mono text-gray-400">Rama: feature/agregar-producto</span>
       </div>
 
-      {/* Alertas de Feedback */}
-      {errorMessage && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg">
-          ⚠️ {errorMessage}
-        </div>
-      )}
-      {successMessage && (
-        <div className="mb-4 p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-lg">
-          ✅ {successMessage}
-        </div>
-      )}
+      <p className="text-sm text-gray-600 mb-4 leading-relaxed">
+        Este componente es una plantilla visual. En el <strong>Módulo 3</strong> aprenderás a
+        manejar el estado con <code>useState</code>, validar tipos con TypeScript y enviar los datos
+        mediante un <code>POST</code> asíncrono con <code>fetch</code> a MongoDB Atlas.
+      </p>
 
-      {/* Formulario Estilizado con Tailwind */}
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
-        {/* Nombre */}
-        <div className="lg:col-span-2">
-          <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">
-            Nombre del Producto
-          </label>
+      {/* Formulario maqueta para que el alumno lo complete */}
+      <form onSubmit={handlePlaceholderSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end opacity-75">
+        <div>
+          <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">Nombre</label>
           <input
             type="text"
-            name="nombre"
-            value={formData.nombre}
-            onChange={handleChange}
-            placeholder="Ej. Teclado Mecánico"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            required
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            placeholder="Ej. Mouse Gamer"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-50 focus:bg-white"
           />
         </div>
-
-        {/* Categoría */}
         <div>
-          <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">
-            Categoría
-          </label>
-          <select
-            name="categoria"
-            value={formData.categoria}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
-          >
-            <option value="Electrónica">Electrónica</option>
-            <option value="Computación">Computación</option>
-            <option value="Accesorios">Accesorios</option>
-            <option value="Audio">Audio</option>
-            <option value="Monitores">Monitores</option>
-            <option value="Hogar">Hogar</option>
-          </select>
+          <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">Categoría</label>
+          <input
+            type="text"
+            placeholder="Ej. Accesorios"
+            disabled
+            className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-100 text-gray-400 cursor-not-allowed"
+          />
         </div>
-
-        {/* Precio */}
         <div>
-          <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">
-            Precio ($)
-          </label>
+          <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">Precio</label>
           <input
             type="number"
-            name="precio"
-            step="0.01"
-            min="0"
-            value={formData.precio === 0 ? '' : formData.precio}
-            onChange={handleChange}
             placeholder="0.00"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            required
+            disabled
+            className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-100 text-gray-400 cursor-not-allowed"
           />
         </div>
-
-        {/* Stock */}
         <div>
-          <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">
-            Stock Inicial
-          </label>
-          <input
-            type="number"
-            name="stock"
-            min="0"
-            value={formData.stock === 0 ? '' : formData.stock}
-            onChange={handleChange}
-            placeholder="0"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            required
-          />
-        </div>
-
-        {/* Botón de Envío */}
-        <div className="lg:col-span-5 flex justify-end mt-2">
           <button
             type="submit"
-            disabled={loading}
-            className={`px-5 py-2.5 rounded-lg text-sm font-medium text-white shadow-sm transition flex items-center ${
-              loading
-                ? 'bg-indigo-400 cursor-not-allowed'
-                : 'bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200'
-            }`}
+            className="w-full px-4 py-2 text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-600 rounded-lg shadow-sm transition"
           >
-            {loading ? (
-              <>
-                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Guardando...
-              </>
-            ) : (
-              'Guardar Producto'
-            )}
+            Guardar (Probar)
           </button>
         </div>
       </form>

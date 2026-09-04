@@ -1,67 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Product } from './types/product';
-import { getProducts, deleteProduct } from './services/api';
 import { Navbar } from './components/Navbar';
 import { ProductForm } from './components/ProductForm';
 import { ProductList } from './components/ProductList';
 import { EditModal } from './components/EditModal';
 
 export function App() {
+  // Lista de productos local (inicia vacía en el repositorio semilla)
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [loading] = useState<boolean>(false);
 
-  // Estado para el modal de edición (Módulo 4)
+  // Estados para el modal de edición (Módulo 4)
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
-  // ==========================================================================
-  // [MÓDULO 2] - Operación READ: Cargar productos al montar el componente
-  // ==========================================================================
-  const loadProducts = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await getProducts();
-      setProducts(data);
-    } catch (err: any) {
-      setError(
-        err.message || 'No se pudo conectar con el backend. ¿Asegúrate de ejecutar `npm run dev` en server/?'
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    loadProducts();
-  }, []);
-
-  // ==========================================================================
-  // [MÓDULO 3] - Operación CREATE: Callback cuando se crea un producto
-  // ==========================================================================
+  // Handlers que los alumnos conectarán en sus respectivas ramas
   const handleProductCreated = (newProduct: Product) => {
     setProducts((prev) => [newProduct, ...prev]);
   };
 
-  // ==========================================================================
-  // [MÓDULO 4] - Operación DELETE: Callback para eliminar un producto
-  // ==========================================================================
-  const handleDeleteProduct = async (id: string) => {
-    const confirm = window.confirm('¿Seguro que deseas eliminar este producto?');
-    if (!confirm) return;
-
-    try {
-      await deleteProduct(id);
-      setProducts((prev) => prev.filter((p) => p._id !== id));
-    } catch (err: any) {
-      alert(`Error al eliminar: ${err.message}`);
-    }
+  const handleDeleteProduct = (id: string) => {
+    alert(`[Módulo 4]: Eliminar producto ${id} aún no está conectado al endpoint DELETE.`);
   };
 
-  // ==========================================================================
-  // [MÓDULO 4] - Operación UPDATE: Callback para actualizar un producto
-  // ==========================================================================
   const handleOpenEdit = (product: Product) => {
     setEditingProduct(product);
     setIsEditModalOpen(true);
@@ -73,46 +34,48 @@ export function App() {
     );
   };
 
-  const totalStock = products.reduce((acc, curr) => acc + (curr.stock || 0), 0);
-
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col font-sans">
-      <Navbar productCount={totalStock} />
+      {/* Barra de navegación superior */}
+      <Navbar productCount={products.length} />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* [MÓDULO 1] Banner de Bienvenida y Prueba Inicial de React */}
+        {/* Banner de Bienvenida del Curso */}
         <div className="bg-gradient-to-r from-indigo-700 to-violet-800 text-white rounded-2xl p-6 shadow-md mb-8">
           <span className="bg-indigo-500 bg-opacity-30 border border-indigo-400 text-indigo-100 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
             Repositorio Semilla • Rama main
           </span>
           <h1 className="text-2xl sm:text-3xl font-extrabold mt-3">
-            Sistema de Inventario Simple
+            Sistema de Inventario Simple (MERN + TS)
           </h1>
           <p className="mt-2 text-indigo-100 text-sm leading-relaxed max-w-3xl">
-            ¡Bienvenido al curso de Git/GitLab y MERN! Estás en la rama principal.
-            Recuerda la regla de oro: <strong>nunca programes directamente en main</strong>.
-            Crea tu rama para cada módulo siguiendo la guía del instructor.
+            ¡Bienvenido al curso de Git & GitLab! Esta es la rama base del proyecto.
+            Recuerda la regla de oro: <strong>"Nunca trabajes directo en main"</strong>.
+            Irás implementando cada funcionalidad en su propia rama de características.
           </p>
         </div>
 
-        {/* Alerta de Error de Servidor */}
-        {error && (
-          <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg shadow-sm">
-            <h3 className="text-sm font-bold text-red-800">Error de conexión</h3>
-            <p className="text-xs text-red-700 mt-1">{error}</p>
-            <button
-              onClick={loadProducts}
-              className="mt-2 text-xs font-semibold text-red-800 underline"
-            >
-              Reintentar conexión
-            </button>
+        {/* ================================================================= */}
+        {/* [MÓDULO 1] - PEQUEÑA PRUEBA DE COMPILACIÓN EN REACT               */}
+        {/* ================================================================= */}
+        <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-xl mb-8 shadow-sm">
+          <div className="flex items-start">
+            <span className="text-2xl mr-3">🧪</span>
+            <div>
+              <h3 className="text-sm font-bold text-amber-900">
+                Prueba del Módulo 1: Modificar texto estático
+              </h3>
+              <p className="text-xs text-amber-800 mt-1 leading-relaxed">
+                Abre el archivo <code className="bg-amber-100 px-1 py-0.5 rounded font-mono font-bold text-amber-900">client/src/App.tsx</code> y modifica este texto usando clases de Tailwind CSS para confirmar que tu entorno compila correctamente antes de crear ramas.
+              </p>
+            </div>
           </div>
-        )}
+        </div>
 
-        {/* [MÓDULO 3] Formulario para Crear Productos */}
+        {/* [MÓDULO 3] Formulario para Crear Productos (Rama feature/agregar-producto) */}
         <ProductForm onProductCreated={handleProductCreated} />
 
-        {/* [MÓDULO 2] Tabla y Vista de Inventario */}
+        {/* [MÓDULO 2] Tabla de Inventario (Rama feature/ver-inventario) */}
         <ProductList
           products={products}
           loading={loading}
@@ -121,7 +84,7 @@ export function App() {
         />
       </main>
 
-      {/* [MÓDULO 4] Modal de Edición */}
+      {/* [MÓDULO 4] Modal de Edición (Rama feature/editar-eliminar) */}
       <EditModal
         product={editingProduct}
         isOpen={isEditModalOpen}

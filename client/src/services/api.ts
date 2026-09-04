@@ -1,88 +1,62 @@
 import { Product, CreateProductDTO, UpdateProductDTO } from '../types/product';
 
-// URL base de la API Express (ajustable en variables de entorno)
+// URL base del backend Express
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 /**
  * ============================================================================
- * [MÓDULO 2] - OPERACIÓN READ: Rama feature/ver-inventario
+ * [MÓDULO 2] - OPERACIÓN READ
+ * Rama: feature/ver-inventario
  * ============================================================================
- * Tarea del Alumno:
- * 1. Realizar una petición GET a `${API_URL}/products` usando fetch().
- * 2. Validar que la respuesta sea exitosa (response.ok).
- * 3. Retornar el array de productos en formato JSON.
+ * Instrucciones:
+ * Consumir el endpoint GET `${API_URL}/products` usando fetch() nativo
+ * y retornar la lista de productos tipada como Promise<Product[]>.
  */
 export async function getProducts(): Promise<Product[]> {
-  // TODO [MÓDULO 2]: Implementar la petición GET con fetch()
-  const response = await fetch(`${API_URL}/products`);
-  if (!response.ok) {
-    throw new Error(`Error al obtener productos: ${response.statusText}`);
-  }
-  return response.json();
+  // TODO [MÓDULO 2]: Implementar la llamada GET con fetch() a `${API_URL}/products`
+  console.info(`ℹ️ getProducts() aún no ha sido implementado hacia ${API_URL}/products (Módulo 2)`);
+  return [];
 }
 
 /**
  * ============================================================================
- * [MÓDULO 3] - OPERACIÓN CREATE: Rama feature/agregar-producto
+ * [MÓDULO 3] - OPERACIÓN CREATE
+ * Rama: feature/agregar-producto
  * ============================================================================
- * Tarea del Alumno:
- * 1. Realizar una petición POST a `${API_URL}/products`.
- * 2. Enviar el encabezado 'Content-Type': 'application/json'.
- * 3. Serializar el objeto 'product' con JSON.stringify(product).
- * 4. Retornar el nuevo producto creado.
+ * Instrucciones:
+ * Enviar un POST a `${API_URL}/products` con JSON.stringify(product)
+ * y encabezado 'Content-Type': 'application/json'.
  */
 export async function createProduct(product: CreateProductDTO): Promise<Product> {
-  // TODO [MÓDULO 3]: Implementar la petición POST con fetch()
-  const response = await fetch(`${API_URL}/products`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(product),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Error al crear producto');
-  }
-  return response.json();
+  // TODO [MÓDULO 3]: Implementar la llamada POST con fetch()
+  console.info('ℹ️ createProduct() aún no ha sido implementado (Módulo 3)', product);
+  throw new Error('Función createProduct() pendiente de implementar en el Módulo 3');
 }
 
 /**
  * ============================================================================
- * [MÓDULO 4] - OPERACIÓN UPDATE: Rama feature/editar-eliminar
+ * [MÓDULO 4] - OPERACIÓN UPDATE
+ * Rama: feature/editar-eliminar
  * ============================================================================
- * Tarea del Alumno:
- * 1. Realizar una petición PUT a `${API_URL}/products/${id}`.
- * 2. Enviar los campos modificados en el body.
+ * Instrucciones:
+ * Enviar un PUT a `${API_URL}/products/${id}` con los cambios en el body.
  */
 export async function updateProduct(id: string, updates: UpdateProductDTO): Promise<Product> {
-  // TODO [MÓDULO 4]: Implementar la petición PUT con fetch()
-  const response = await fetch(`${API_URL}/products/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(updates),
-  });
-
-  if (!response.ok) {
-    throw new Error('Error al actualizar el producto');
-  }
-  return response.json();
+  // TODO [MÓDULO 4]: Implementar la llamada PUT con fetch()
+  console.info('ℹ️ updateProduct() aún no ha sido implementado (Módulo 4)', id, updates);
+  throw new Error('Función updateProduct() pendiente de implementar en el Módulo 4');
 }
 
 /**
  * ============================================================================
- * [MÓDULO 4] - OPERACIÓN DELETE: Rama feature/editar-eliminar
+ * [MÓDULO 4] - OPERACIÓN DELETE
+ * Rama: feature/editar-eliminar
  * ============================================================================
- * Tarea del Alumno:
- * 1. Realizar una petición DELETE a `${API_URL}/products/${id}`.
+ * Instrucciones:
+ * Enviar un DELETE a `${API_URL}/products/${id}` con fetch().
  */
 export async function deleteProduct(id: string): Promise<{ message: string; id: string }> {
-  // TODO [MÓDULO 4]: Implementar la petición DELETE con fetch()
-  const response = await fetch(`${API_URL}/products/${id}`, {
-    method: 'DELETE',
-  });
-
-  if (!response.ok) {
-    throw new Error('Error al eliminar el producto');
-  }
-  return response.json();
+  // TODO [MÓDULO 4]: Implementar la llamada DELETE con fetch()
+  console.info('ℹ️ deleteProduct() aún no ha sido implementado (Módulo 4)', id);
+  throw new Error('Función deleteProduct() pendiente de implementar en el Módulo 4');
 }
