@@ -1,0 +1,41 @@
+# Pipeline de CI/CD para GitLab
+# Este archivo valida la calidad del código y la compilación en cada Merge Request y en main
+
+image: node:20-alpine
+
+stages:
+  - test
+  - build
+
+# Cache para acelerar pipelines consecutivos
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - server/node_modules/
+    - client/node_modules/
+
+# 1. Validación de tipos TypeScript en el Backend
+test:server:
+  stage: test
+  script:
+    - cd server
+    - npm ci
+    - npx tsc --noEmit
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+# 2. Compilación y Build del Frontend React
+build:client:
+  stage: build
+  script:
+    - cd client
+    - npm ci
+    - npm run build
+  artifacts:
+    paths:
+      - client/dist/
+    expire_in: 3 days
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main"'

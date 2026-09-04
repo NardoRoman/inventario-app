@@ -1,0 +1,24 @@
+{
+  "name": "inventario-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sistema de Inventario Simple - Curso MERN (TypeScript) + Git/GitLab",
+  "scripts": {
+    "install:all": "npm install --prefix server && npm install --prefix client",
+    "seed": "npm run seed --prefix server",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "build:client": "npm run build --prefix client",
+    "build:server": "npm run build --prefix server"
+  },
+  "keywords": [
+    "mern",
+    "typescript",
+    "gitlab",
+    "react",
+    "express",
+    "mongodb"
+  ],
+  "author": "Curso MERN + Git",
+  "license": "ISC"
+}
