@@ -14,8 +14,14 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
  */
 export async function getProducts(): Promise<Product[]> {
   // TODO [MÓDULO 2]: Implementar la llamada GET con fetch() a `${API_URL}/products`
-  console.info(`ℹ️ getProducts() aún no ha sido implementado hacia ${API_URL}/products (Módulo 2)`);
-  return [];
+  // console.info(`ℹ️ getProducts() aún no ha sido implementado hacia ${API_URL}/products (Módulo 2)`);
+  const response = await fetch(`${API_URL}/products`);
+  
+  if(!response.ok){
+    const errorText = await response.text();
+    throw new Error(`Error ${response.status} al cargar productos: ${errorText || response.statusText}`);
+  }
+  return response.json();
 }
 
 /**
