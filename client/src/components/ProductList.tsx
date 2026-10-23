@@ -11,7 +11,7 @@ interface ProductListProps {
 /**
  * ============================================================================
  * [MÓDULO 2 & MÓDULO 4] - TABLA DE PRODUCTOS CON ACCIONES COMPLETAS
- * Rama: feature/editar-eliminar
+ * Rama: feature/boton-azul (Dinámica de Conflicto - Paso 04)
  * ============================================================================
  */
 export const ProductList: React.FC<ProductListProps> = ({
@@ -98,10 +98,10 @@ export const ProductList: React.FC<ProductListProps> = ({
                     Editar
                   </button>
 
-                  {/* NOTA PEDAGÓGICA: Este botón rojo es el que se usa para simular el merge conflict */}
+                  {/* NOTA PEDAGÓGICA: Este botón cambió a AZUL en la rama feature/boton-azul */}
                   <button
                     onClick={() => onDeleteProduct(product._id)}
-                    className="px-3 py-1.5 text-xs font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg shadow-sm transition"
+                    className="px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition"
                   >
                     Eliminar
                   </button>
