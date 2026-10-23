@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Product } from './types/product';
-import { getProducts } from './services/api';
+import { getProducts, deleteProduct } from './services/api';
 import { Navbar } from './components/Navbar';
 import { ProductForm } from './components/ProductForm';
 import { ProductList } from './components/ProductList';
@@ -11,7 +11,7 @@ export function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Estados para el modal de edición (Módulo 4)
+  // Estados para el modal de edición
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
@@ -35,17 +35,30 @@ export function App() {
     loadProducts();
   }, []);
 
-  // ==========================================================================
-  // [MÓDULO 3] - OPERACIÓN CREATE: Callback cuando se crea un producto
-  // ==========================================================================
+  // [MÓDULO 3] - Callback cuando se crea un producto
   const handleProductCreated = (newProduct: Product) => {
     setProducts((prev) => [newProduct, ...prev]);
   };
 
-  const handleDeleteProduct = (id: string) => {
-    alert(`[Módulo 4]: Eliminar producto ${id} pendiente de conectar.`);
+  // ==========================================================================
+  // [MÓDULO 4 · Paso 02] - OPERACIÓN DELETE: Eliminar producto por ID
+  // ==========================================================================
+  const handleDeleteProduct = async (id: string) => {
+    const confirm = window.confirm('¿Estás seguro de que deseas eliminar este producto de la base de datos?');
+    if (!confirm) return;
+
+    try {
+      await deleteProduct(id);
+      // Inmutabilidad: .filter() crea un arreglo NUEVO sin el producto eliminado
+      setProducts((prev) => prev.filter((p) => p._id !== id));
+    } catch (err: any) {
+      alert(`Error al eliminar: ${err.message}`);
+    }
   };
 
+  // ==========================================================================
+  // [MÓDULO 4] - OPERACIÓN UPDATE: Editar producto mediante modal y PUT
+  // ==========================================================================
   const handleOpenEdit = (product: Product) => {
     setEditingProduct(product);
     setIsEditModalOpen(true);
@@ -64,16 +77,16 @@ export function App() {
       <Navbar productCount={totalStock} />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Banner de Estado (Módulo 3) */}
-        <div className="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-2xl p-6 shadow-md mb-8">
-          <span className="bg-emerald-500 bg-opacity-30 border border-emerald-300 text-emerald-100 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
-            Rama: feature/agregar-producto • Vinculada al Issue #2
+        {/* Banner de Estado (Módulo 4) */}
+        <div className="bg-gradient-to-r from-violet-700 to-indigo-900 text-white rounded-2xl p-6 shadow-md mb-8">
+          <span className="bg-violet-500 bg-opacity-30 border border-violet-400 text-violet-100 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
+            Rama: feature/editar-eliminar • CRUD 100% Completado
           </span>
           <h1 className="text-2xl sm:text-3xl font-extrabold mt-3">
-            Módulo 3: Operación CREATE Implementada
+            Módulo 4: Operaciones UPDATE y DELETE Implementadas
           </h1>
-          <p className="mt-2 text-emerald-100 text-sm leading-relaxed max-w-3xl">
-            El formulario ya está conectado con TypeScript y envía los datos mediante una petición <code>POST</code> con <code>fetch</code> a MongoDB Atlas.
+          <p className="mt-2 text-violet-100 text-sm leading-relaxed max-w-3xl">
+            Todas las operaciones CRUD están conectadas a MongoDB Atlas mediante Express y TypeScript con <code>fetch</code> nativo.
           </p>
         </div>
 
@@ -90,10 +103,10 @@ export function App() {
           </div>
         )}
 
-        {/* Formulario Conectado (Módulo 3) */}
+        {/* Formulario de Creación (Módulo 3) */}
         <ProductForm onProductCreated={handleProductCreated} />
 
-        {/* Tabla Dinámica (Módulo 2) */}
+        {/* Tabla y Acciones (Módulos 2 y 4) */}
         <ProductList
           products={products}
           loading={loading}
@@ -102,7 +115,7 @@ export function App() {
         />
       </main>
 
-      {/* Modal de Edición (Pendiente Módulo 4) */}
+      {/* Modal de Edición (Módulo 4) */}
       <EditModal
         product={editingProduct}
         isOpen={isEditModalOpen}
@@ -111,7 +124,7 @@ export function App() {
       />
 
       <footer className="bg-white border-t border-gray-200 py-4 text-center text-xs text-gray-500">
-        Curso MERN (TypeScript) + Git/GitLab • Rama feature/agregar-producto
+        Curso MERN (TypeScript) + Git/GitLab • Rama feature/editar-eliminar
       </footer>
     </div>
   );

@@ -48,28 +48,44 @@ export async function createProduct(product: CreateProductDTO): Promise<Product>
 
 /**
  * ============================================================================
- * [MÓDULO 4] - OPERACIÓN UPDATE
+ * [MÓDULO 4] - OPERACIÓN UPDATE  ✅ IMPLEMENTADO (Módulo 4 · Paso 03)
  * Rama: feature/editar-eliminar
  * ============================================================================
- * Instrucciones:
- * Enviar un PUT a `${API_URL}/products/${id}` con los cambios en el body.
+ * UpdateProductDTO = Partial<CreateProductDTO>: todas las propiedades son
+ * opcionales, así podemos enviar solo el precio, solo el stock, etc.
+ * EditModal.tsx ya llama a esta función: al implementarla, el modal cobra vida.
  */
 export async function updateProduct(id: string, updates: UpdateProductDTO): Promise<Product> {
-  // TODO [MÓDULO 4]: Implementar la llamada PUT con fetch()
-  console.info('ℹ️ updateProduct() aún no ha sido implementado (Módulo 4)', id, updates);
-  throw new Error('Función updateProduct() pendiente de implementar en el Módulo 4');
+  const response = await fetch(`${API_URL}/products/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updates),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || `Error ${response.status} al actualizar producto`);
+  }
+
+  return response.json();
 }
 
 /**
  * ============================================================================
- * [MÓDULO 4] - OPERACIÓN DELETE
+ * [MÓDULO 4] - OPERACIÓN DELETE  ✅ IMPLEMENTADO (Módulo 4 · Paso 01)
  * Rama: feature/editar-eliminar
  * ============================================================================
- * Instrucciones:
- * Enviar un DELETE a `${API_URL}/products/${id}` con fetch().
+ * La petición más sencilla: sin cuerpo ni encabezados, solo el método y el id.
  */
 export async function deleteProduct(id: string): Promise<{ message: string; id: string }> {
-  // TODO [MÓDULO 4]: Implementar la llamada DELETE con fetch()
-  console.info('ℹ️ deleteProduct() aún no ha sido implementado (Módulo 4)', id);
-  throw new Error('Función deleteProduct() pendiente de implementar en el Módulo 4');
+  const response = await fetch(`${API_URL}/products/${id}`, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || `Error ${response.status} al eliminar producto`);
+  }
+
+  return response.json();
 }
