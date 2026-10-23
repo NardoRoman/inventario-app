@@ -11,7 +11,7 @@ interface ProductListProps {
 /**
  * ============================================================================
  * [MÓDULO 2 & MÓDULO 4] - TABLA DE PRODUCTOS CON ACCIONES COMPLETAS
- * Rama: feature/boton-verde (Dinámica de Conflicto - Paso 05)
+ * Rama: feature/boton-verde (Conflicto Resuelto - Paso 06)
  * ============================================================================
  */
 export const ProductList: React.FC<ProductListProps> = ({
@@ -89,7 +89,7 @@ export const ProductList: React.FC<ProductListProps> = ({
                   </span>
                 </td>
 
-                {/* [MÓDULO 4] - Botones Conectados */}
+                {/* [MÓDULO 4] - Botones Conectados (Conflicto Resuelto) */}
                 <td className="px-6 py-4 text-right whitespace-nowrap space-x-2">
                   <button
                     onClick={() => onEditProduct(product)}
@@ -98,7 +98,6 @@ export const ProductList: React.FC<ProductListProps> = ({
                     Editar
                   </button>
 
-                  {/* NOTA PEDAGÓGICA: Este botón cambió a VERDE en la rama feature/boton-verde */}
                   <button
                     onClick={() => onDeleteProduct(product._id)}
                     className="px-3 py-1.5 text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-sm transition"
