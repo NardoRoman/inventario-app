@@ -1,4 +1,5 @@
 import React from 'react';
+import { Package, Layers, Sparkles } from 'lucide-react';
 
 interface NavbarProps {
   productCount: number;
@@ -6,31 +7,44 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ productCount }) => {
   return (
-    <header className="bg-slate-900 text-white shadow-lg border-b border-slate-800">
+    <header className="sticky top-0 z-30 bg-white/70 backdrop-blur-xl border-b border-black/[0.06] transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        {/* Logo y Título */}
+        {/* Logo y Marca */}
         <div className="flex items-center space-x-3">
-          <div className="bg-indigo-600 p-2 rounded-lg shadow-md">
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-            </svg>
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-800 text-white flex items-center justify-center shadow-sm shadow-slate-900/10 border border-white/20">
+            <Package className="w-5 h-5 text-white stroke-[1.75]" />
           </div>
           <div>
-            <h1 className="text-lg font-bold tracking-tight">Sistema de Inventario</h1>
-            <p className="text-xs text-slate-400 font-mono">Curso MERN + Git/GitLab (TypeScript)</p>
+            <div className="flex items-center gap-2">
+              <h1 className="text-[15px] font-semibold tracking-tight text-slate-900">
+                Inventario Pro
+              </h1>
+              <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-blue-50 text-blue-700 border border-blue-100">
+                <Sparkles className="w-2.5 h-2.5" />
+                MERN Stack
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-400 font-normal">
+              TypeScript • MongoDB Atlas
+            </p>
           </div>
         </div>
 
-        {/* Badges y Contador */}
-        <div className="flex items-center space-x-3">
-          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-950 text-indigo-300 border border-indigo-700">
-            TS + Atlas
-          </span>
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-slate-800 text-slate-200 border border-slate-700">
-            Total en stock: <strong className="ml-1 text-emerald-400">{productCount}</strong>
-          </span>
+        {/* Indicadores y Contador */}
+        <div className="flex items-center space-x-2.5">
+          <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-slate-100/80 text-slate-600 border border-black/[0.04]">
+            <Layers className="w-3.5 h-3.5 text-slate-500" />
+            <span>Rama: <span className="font-semibold text-slate-800">design</span></span>
+          </div>
+
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-white/90 text-slate-700 border border-black/[0.06] shadow-sm shadow-black/[0.02]">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20"></span>
+            <span>Stock total:</span>
+            <strong className="font-semibold text-slate-900">{productCount}</strong>
+          </div>
         </div>
       </div>
     </header>
   );
 };
+
