@@ -4,6 +4,9 @@ import dotenv from 'dotenv';
 import { connectDB } from './config/db.js';
 import { productRouter } from './routes/productRoutes.js';
 
+import dns from "node:dns";
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
+
 dotenv.config();
 
 const app: Application = express();

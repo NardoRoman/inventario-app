@@ -2,6 +2,9 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { Product } from './models/Product.js';
 
+import dns from "node:dns";
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
+
 dotenv.config();
 
 const sampleProducts = [
